@@ -1,5 +1,7 @@
 import { Controller, Get, Post, Param, Body, Put, Delete, HttpCode, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
+import { createProfileDto } from './dto/create-profile.dto';
+import { updateProfileDto } from './dto/update-profile.dto';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -7,14 +9,14 @@ export class ProfilesController {
 
   // POST /profiles
   @Post()
-  async create(@Body() body: { name: string, email: string }) {
+  async create(@Body() body: createProfileDto) {
     return this.profileService.create(body);
   }
 
   // GET /profiles
   @Get()
   findAll() {
-    return this.profileService.findAll();
+    return this.profileService.findAll({ orderBy: { id: 'asc' } });
   }
 
   // GET /profiles/:id
@@ -27,7 +29,7 @@ export class ProfilesController {
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: { name: string, email: string }
+    @Body() body: updateProfileDto
   ) {
     return this.profileService.update({
       where: { id },

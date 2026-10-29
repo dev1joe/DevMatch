@@ -31,15 +31,18 @@ export class ProfilesService {
     return this.prisma.profile.create({ data });
   }
 
-  async findAll() {
-    return this.prisma.profile.findMany();
+  async findAll(params: {
+    orderBy?: Prisma.ProfileOrderByWithRelationInput;
+  }) {
+    const { orderBy } = params;
+    return this.prisma.profile.findMany({ orderBy });
   }
 
-  findOne(where: Prisma.ProfileWhereUniqueInput) {
+  async findOne(where: Prisma.ProfileWhereUniqueInput) {
     return this.prisma.profile.findUnique({ where });
   }
 
-  update(params: {
+  async update(params: {
     where: Prisma.ProfileWhereUniqueInput,
     data: Prisma.ProfileUpdateInput
   }) {
@@ -47,7 +50,7 @@ export class ProfilesService {
     return this.prisma.profile.update({ data, where });
   }
 
-  del(where: Prisma.ProfileWhereUniqueInput) {
+  async del(where: Prisma.ProfileWhereUniqueInput) {
     return this.prisma.profile.delete({ where });
   }
 }
